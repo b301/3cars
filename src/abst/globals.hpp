@@ -1,8 +1,10 @@
 #ifndef GLOBALS_HPP
 #define GLOBALS_HPP
 
-#define WINDOW_WIDTH 1920.f
-#define WINDOW_HEIGHT 1080.f
+#include <SFML/Window.hpp>
+
+#define WINDOW_WIDTH sf::VideoMode::getDesktopMode().width
+#define WINDOW_HEIGHT sf::VideoMode::getDesktopMode().height
 
 #define CAR_WIDTH 50.f
 #define CAR_HEIGHT 80.f

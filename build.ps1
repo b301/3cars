@@ -5,5 +5,7 @@ g++ -c src/impl/obstacle.cpp -Isrc/abst -Iinclude -o obj/obstacle.o
 g++ -c src/impl/cars_handler.cpp -Isrc/abst -Iinclude -o obj/cars_handler.o
 
 # link the object files under obj/ into executable file and include sfml
-g++ obj/main.o obj/game.o obj/car.o obj/obstacle.o obj/cars_handler.o `
-    -o 3cars.exe -Iinclude -Llib -lsfml-graphics -lsfml-window -lsfml-system
+g++ obj/main.o obj/game.o obj/car.o obj/obstacle.o obj/cars_handler.o -o 3cars.exe `
+ -Iinclude -Llib -lsfml-graphics -lsfml-window -lsfml-system -mwindows
+
+echo "Build complete! Run 3cars.exe to play the game."
