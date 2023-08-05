@@ -25,17 +25,17 @@ void Obstacle::initializeVariables(float width, float height, float middle, floa
     this->score = 0;
     this->scoreFlag = true;
 
-    std::cout << "width: " << this->width << "\n";
-    std::cout << "height: " << this->height << "\n";
-    std::cout << "middle: " << this->middle << "\n";
-    std::cout << "deviation: " << this->deviation << "\n";
-    std::cout << "speed: " << this->speed << "\n";
+    // std::cout << "width: " << this->width << "\n";
+    // std::cout << "height: " << this->height << "\n";
+    // std::cout << "middle: " << this->middle << "\n";
+    // std::cout << "deviation: " << this->deviation << "\n";
+    // std::cout << "speed: " << this->speed << "\n";
 }
 
 void Obstacle::initializeObstacle() {
     this->obstacle.setSize(sf::Vector2f(this->width, this->height));
     this->obstacle.setPosition(sf::Vector2f(this->x, this->y));
-    this->obstacle.setFillColor(sf::Color::Red);
+    this->obstacle.setFillColor(sf::Color::White);
 }
 
 void Obstacle::randomizeLane() {

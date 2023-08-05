@@ -4,8 +4,8 @@
 
 
 // Constructor:
-Game::Game() {
-    this->initializeVariables();
+Game::Game(int cars_count) {
+    this->initializeVariables(cars_count);
     this->initializeWindow();
 }
 
@@ -15,12 +15,36 @@ Game::~Game() {
 }
 
 // Private:
-void Game::initializeVariables() {
+void Game::initializeVariables(int cars_count) {
     this->window = nullptr;
 
     if (!this->font.loadFromFile("assets/valorax.otf")) {
-        std::cout << "Failed to load valorax.otf font" << std::endl;
+        std::cout << "Error loading font: valorax" << std::endl;
     }
+
+    std::vector<sf::Keyboard::Key> movement_keys = {
+        sf::Keyboard::S,
+        sf::Keyboard::D,
+        sf::Keyboard::F,
+        sf::Keyboard::G,
+        sf::Keyboard::H,
+        sf::Keyboard::J,
+        sf::Keyboard::K,
+        sf::Keyboard::L,
+    };
+
+    std::vector<sf::Color> colors = {
+        sf::Color::Red,
+        sf::Color::Green,
+        sf::Color::Blue,
+        sf::Color::Yellow,
+        sf::Color::Magenta,
+        sf::Color::Cyan,
+        sf::Color(255, 0, 255), // Pink
+        sf::Color(255, 165, 0), // Orange
+    };
+
+    this->cars_handler = new CarsHandler(cars_count, movement_keys, colors);
 
     text.setFont(this->font);
     text.setString("SCORE IS IMMACULATE");
@@ -49,17 +73,8 @@ void Game::pollEvent() {
                 case sf::Keyboard::Escape:
                     this->window->close();
                     break;
-                case sf::Keyboard::F:
-                    // std::cout << "F pressed" << std::endl;
-                    this->left_car.move();
-                    break;
-                case sf::Keyboard::G:
-                    // std::cout << "G pressed" << std::endl;
-                    this->middle_car.move();
-                    break;
-                case sf::Keyboard::H:
-                    // std::cout << "H pressed" << std::endl;
-                    this->right_car.move();
+                default:
+                    this->cars_handler->move(this->event.key.code);
                     break;
             }
         }
@@ -68,14 +83,12 @@ void Game::pollEvent() {
 
 void Game::checkCollisions() {
     // if any car collides
-    if (this->left_car.checkCollison() || this->middle_car.checkCollison() || this->right_car.checkCollison()) {
-        std::cout << "Game over" << std::endl;
-        this->left_car.reset();
-        this->middle_car.reset();
-        this->right_car.reset();
+    if (this->cars_handler->checkCollisons()) {
+        // std::cout << "Game over" << std::endl;
+        this->cars_handler->reset();
     }
 
-    this->text.setString("Score: " + std::to_string(this->left_car.getScore()));
+    this->text.setString("Score: " + std::to_string(this->cars_handler->getScore()));
 }
 
 void Game::update() {
@@ -87,10 +100,7 @@ void Game::render() {
     this->window->clear();
 
     // Render items here
-    this->left_car.render(this->window);
-    this->middle_car.render(this->window);
-    this->right_car.render(this->window);
-
+    this->cars_handler->render(this->window);
     this->window->draw(this->text);
 
     this->window->display();

@@ -6,7 +6,7 @@
 #include <string>
 
 #include "globals.hpp"
-#include "car.hpp"
+#include "cars_handler.hpp"
 
 
 class Game
@@ -22,42 +22,15 @@ private:
     const float window_width = WINDOW_WIDTH;
     const float window_height = WINDOW_HEIGHT;
 
-    // const float car_width = CAR_WIDTH;
-    // const float car_height = CAR_HEIGHT;
-
-    // define the left car object, should be at 200 px as x (middle of 400 px lane)
-    Car left_car = Car(
-        CAR_WIDTH, CAR_HEIGHT, 
-        LANE_WIDTH / 2 - (CAR_WIDTH / 2) - CAR_DEVIATION_FROM_MIDDLE, 
-        CARS_DISTANCE_FROM_TOP, 
-        LANE_WIDTH / 2, 
-        CAR_DEVIATION_FROM_MIDDLE,
-        sf::Color::Red
-    );
-    Car middle_car = Car(
-        CAR_WIDTH, CAR_HEIGHT, 
-        LANE_WIDTH * 1.5 - (CAR_WIDTH / 2) - CAR_DEVIATION_FROM_MIDDLE, 
-        CARS_DISTANCE_FROM_TOP,
-        LANE_WIDTH * 1.5, 
-        CAR_DEVIATION_FROM_MIDDLE,
-        sf::Color::Green
-    );
-    Car right_car = Car(
-        CAR_WIDTH, CAR_HEIGHT, 
-        LANE_WIDTH * 2.5 - (CAR_WIDTH / 2) - CAR_DEVIATION_FROM_MIDDLE, 
-        CARS_DISTANCE_FROM_TOP, 
-        LANE_WIDTH * 2.5, 
-        CAR_DEVIATION_FROM_MIDDLE,
-        sf::Color::Blue
-    );
+    CarsHandler* cars_handler;
 
     const std::string game_title = "3 Cars";
 
-    void initializeVariables();
+    void initializeVariables(int cars_count);
     void initializeWindow();
 
 public:
-    Game();
+    Game(int cars_count);
     ~Game();
 
     const bool isWindowOpen() const;
