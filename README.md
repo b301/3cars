@@ -29,5 +29,5 @@ It looks shit but it's there ...
 ### Can customize the amount of cars (default is 3) .. works up to 8!
 
 ```bat
-main.exe [number-of-cars]
+3cars.exe [number-of-cars]
 ```
