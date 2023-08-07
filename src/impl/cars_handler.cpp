@@ -1,9 +1,9 @@
 #include "cars_handler.hpp"
 
-
 // Constructor
 CarsHandler::CarsHandler(int cars_count, std::vector<sf::Keyboard::Key> movement_keys, std::vector<sf::Color> colors)
 {
+    int score = 0;
     this->initializeCars(cars_count, movement_keys, colors);
 }
 
@@ -43,20 +43,18 @@ void CarsHandler::initializeCars(int cars_count, std::vector<sf::Keyboard::Key> 
     for (int i = 0; i < cars_count; i++)
     {
         cars.push_back(new Car(
-            CAR_WIDTH, CAR_HEIGHT, 
-            lane_width * (i + 0.5) - (CAR_WIDTH / 2) - CAR_DEVIATION_FROM_MIDDLE, 
-            CARS_DISTANCE_FROM_TOP, 
-            lane_width * (i + 0.5), 
+            CAR_WIDTH, CAR_HEIGHT,
+            lane_width * (i + 0.5) - (CAR_WIDTH / 2) - CAR_DEVIATION_FROM_MIDDLE,
+            CARS_DISTANCE_FROM_TOP,
+            lane_width * (i + 0.5),
             CAR_DEVIATION_FROM_MIDDLE,
             colors[i],
-            movement_keys[i]
-        ));
+            movement_keys[i]));
     }
 }
 
-
 // Public
-void CarsHandler::render(sf::RenderTarget* target)
+void CarsHandler::render(sf::RenderTarget *target)
 {
     for (auto &car : cars)
     {
@@ -94,6 +92,21 @@ void CarsHandler::reset()
 
 int CarsHandler::getScore()
 {
-    int score = 0;
+    bool resetScore = false;
+    for (auto &car : cars)
+    {
+        if (car->getScore() == 0)
+            resetScore = true;
+    }
+
+    if (resetScore)
+    {
+        for (auto &car : cars)
+        {
+            car->reset();
+        }
+        return 0;
+    }
+
     return cars[0]->getScore();
 }

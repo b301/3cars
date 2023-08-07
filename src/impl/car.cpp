@@ -1,20 +1,22 @@
 #include "car.hpp"
 
-
 // Constructor
-Car::Car(float width, float height, float x, float y, float middle, float deviation, sf::Color color, sf::Keyboard::Key movement_key) {
+Car::Car(float width, float height, float x, float y, float middle, float deviation, sf::Color color, sf::Keyboard::Key movement_key)
+{
     this->initializeVariables(width, height, x, y, middle, deviation, color, movement_key);
     this->initializeCar(color);
-    this->initializeObstacles();
+    this->initializeEntities();
 }
 
 // Destructor
-Car::~Car() {
+Car::~Car()
+{
     delete this->obstacle;
 }
 
 // Private:
-void Car::initializeVariables(float width, float height, float x, float y, float middle, float deviation, sf::Color color, sf::Keyboard::Key movement_key) {
+void Car::initializeVariables(float width, float height, float x, float y, float middle, float deviation, sf::Color color, sf::Keyboard::Key movement_key)
+{
     this->width = width;
     this->height = height;
     this->x = x;
@@ -23,73 +25,69 @@ void Car::initializeVariables(float width, float height, float x, float y, float
     this->deviation = deviation;
     this->lane = Lane::LEFT;
     this->movement_key = movement_key;
-
-    // std::cout << "width: " << this->width << "\n";
-    // std::cout << "height: " << this->height << "\n";
-    // std::cout << "x: " << this->x << "\n";
-    // std::cout << "y: " << this->y << "\n";
-    // std::cout << "middle: " << this->middle / 2 << "\n";
-    // std::cout << "deviation: " << this->deviation << "\n";
 }
 
-void Car::initializeCar(sf::Color color) {
+void Car::initializeCar(sf::Color color)
+{
     this->car.setSize(sf::Vector2f(this->width, this->height));
     this->car.setPosition(sf::Vector2f(this->x, this->y));
     this->car.setFillColor(color);
 }
 
-void Car::initializeObstacles() {
-    this->obstacle = new Obstacle(this->width, this->height, this->middle, this->deviation, INITIAL_OBSTACLE_SPEED);
+void Car::initializeEntities()
+{
+    this->obstacle = new Obstacle(OBSTACLE_WIDTH, OBSTACLE_HEIGHT, this->middle, this->deviation, INITIAL_OBSTACLE_SPEED);
+    this->food = new Food(OBSTACLE_WIDTH, OBSTACLE_HEIGHT, this->middle, this->deviation, INITIAL_OBSTACLE_SPEED);
 }
 
-Lane Car::getLane() {
+Lane Car::getLane()
+{
     return this->lane;
 }
 
-void Car::setLane(Lane lane) {
+void Car::setLane(Lane lane)
+{
     this->lane = lane;
 }
 
 // Public:
-void Car::render(sf::RenderTarget* target) {
+void Car::render(sf::RenderTarget *target)
+{
     target->draw(this->car);
     this->obstacle->move();
     this->obstacle->render(target);
+    this->food->move(this->car);
+    this->food->render(target);
 }
 
-
 // movement
-void Car::move(sf::Keyboard::Key key) {
-    if (key != this->movement_key) {
+void Car::move(sf::Keyboard::Key key)
+{
+    if (key != this->movement_key)
+    {
         return;
     }
     // std::cout << "move\n";
 
-    if (this->getLane() == Lane::LEFT) {
-        // std::cout << "middle: " << this->middle << "\n";
-        // std::cout << "deviation: " << this->deviation << "\n";
-        // std::cout << "width: " << this->width / 2 << "\n";
-
+    if (this->getLane() == Lane::LEFT)
+    {
         this->x = this->middle + this->deviation - this->width / 2;
         this->car.setPosition(sf::Vector2f(this->x, this->y));
         this->setLane(Lane::RIGHT);
-    } else if (this->lane == Lane::RIGHT) {
-        // std::cout << "middle: " << this->middle << "\n";
-        // std::cout << "deviation: " << this->deviation << "\n";
-        // std::cout << "width: " << this->width / 2<< "\n";
-        
+    }
+    else if (this->lane == Lane::RIGHT)
+    {
         this->x = this->middle - this->deviation - this->width / 2;
         this->car.setPosition(sf::Vector2f(this->x, this->y));
         this->setLane(Lane::LEFT);
     }
-
-    // print the cars position
-    // std::cout << "x: " << this->x << "\n";
 }
 
 // check collison
-bool Car::checkCollison() {
-    if (this->car.getGlobalBounds().intersects(this->obstacle->getGlobalBounds())) {
+bool Car::checkCollison()
+{
+    if (this->car.getGlobalBounds().intersects(this->obstacle->getGlobalBounds()))
+    {
         return true;
     }
 
@@ -97,12 +95,15 @@ bool Car::checkCollison() {
 }
 
 // get score
-int Car::getScore() {
-    return this->obstacle->getScore();
+int Car::getScore()
+{
+    return this->food->getScore();
 }
 
 // reset score
-void Car::reset() {
-    this->obstacle->resetScore();
+void Car::reset()
+{
     this->obstacle->setSpeed(INITIAL_OBSTACLE_SPEED);
+    this->food->setSpeed(INITIAL_FOOD_SPEED);
+    this->food->resetScore();
 }

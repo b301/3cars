@@ -7,42 +7,39 @@
 
 #include "globals.hpp"
 #include "obstacle.hpp"
-
-
-enum Lane { LEFT, RIGHT };
+#include "food.hpp"
 
 class Car
 {
-    private:
-        sf::RectangleShape car;
-        sf::Color color;
-        float width, height, x, y, middle, deviation;
-        sf::Keyboard::Key movement_key;
-        Lane lane;
+private:
+    sf::RectangleShape car;
+    sf::Color color;
+    float width, height, x, y, middle, deviation;
+    sf::Keyboard::Key movement_key;
+    Lane lane;
 
-        Obstacle* obstacle;
- 
-        void initializeVariables(float width, float height, float x, float y, float middle, float deviation, sf::Color color, sf::Keyboard::Key movement_key);
-        void initializeCar(sf::Color color);
-        void initializeObstacles();
+    Obstacle *obstacle;
+    Food *food;
 
-        Lane getLane();
-        void setLane(Lane lane);
-    public:
-        Car(float width, float height, float x, float y, float middle, float deviation, sf::Color color, sf::Keyboard::Key movement_key);
-        ~Car();
-        
-        void render(sf::RenderTarget* target);
+    void initializeVariables(float width, float height, float x, float y, float middle, float deviation, sf::Color color, sf::Keyboard::Key movement_key);
+    void initializeCar(sf::Color color);
+    void initializeEntities();
 
-        // movement
-        void move(sf::Keyboard::Key key);
-        bool checkCollison();
+    Lane getLane();
+    void setLane(Lane lane);
 
-        int getScore();
-        void reset();
+public:
+    Car(float width, float height, float x, float y, float middle, float deviation, sf::Color color, sf::Keyboard::Key movement_key);
+    ~Car();
+
+    void render(sf::RenderTarget *target);
+
+    // movement
+    void move(sf::Keyboard::Key key);
+    bool checkCollison();
+
+    int getScore();
+    void reset();
 };
-
-
-
 
 #endif // CAR_HPP

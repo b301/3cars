@@ -11,27 +11,25 @@
 
 class CarsHandler
 {
-    private:
-        std::vector<Car*> cars; 
+private:
+    std::vector<Car *> cars;
 
-        // the length of movement_keys should be equal to cars_count
-        void initializeCars(int cars_count, std::vector<sf::Keyboard::Key> movement_keys, std::vector<sf::Color> colors);
-    public:
-        CarsHandler(int cars_count, std::vector<sf::Keyboard::Key> movement_keys, std::vector<sf::Color> colors);
-        ~CarsHandler();
-        
-        void render(sf::RenderTarget* target);
+    // the length of movement_keys should be equal to cars_count
+    void initializeCars(int cars_count, std::vector<sf::Keyboard::Key> movement_keys, std::vector<sf::Color> colors);
 
-        // movement get keyboard keypressed as parameter
-        void move(sf::Keyboard::Key key);
+public:
+    CarsHandler(int cars_count, std::vector<sf::Keyboard::Key> movement_keys, std::vector<sf::Color> colors);
+    ~CarsHandler();
 
-        bool checkCollisons();
-        void reset();
+    void render(sf::RenderTarget *target);
 
-        int getScore();
+    // movement get keyboard keypressed as parameter
+    void move(sf::Keyboard::Key key);
+
+    bool checkCollisons();
+    void reset();
+
+    int getScore();
 };
-
-
-
 
 #endif // CARS_HANDLER_HPP

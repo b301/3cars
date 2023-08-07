@@ -1,5 +1,5 @@
-#ifndef OBSTACLE_HPP
-#define OBSTACLE_HPP
+#ifndef FOOD_HPP
+#define FOOD_HPP
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -8,27 +8,31 @@
 
 #include "globals.hpp"
 
-class Obstacle
+class Food
 {
 private:
     float width, height, middle, deviation, speed, x, y, maximum_speed;
+    int score = 0;
+    bool scoreFlag;
 
-    sf::RectangleShape obstacle;
+    sf::CircleShape food;
 
     void initializeVariables(float width, float height, float middle, float deviation, float speed);
-    void initializeObstacle();
+    void initializeFood();
     void randomizeLane();
 
 public:
-    Obstacle(float width, float height, float middle, float deviation, float speed);
-    ~Obstacle();
+    Food(float width, float height, float middle, float deviation, float speed);
+    ~Food();
 
     void render(sf::RenderTarget *target);
-    void move();
+    void move(sf::RectangleShape &car);
 
     // get global bounds
     const sf::FloatRect getGlobalBounds() const;
+    const int getScore();
+    void resetScore();
     void setSpeed(float speed);
 };
 
-#endif // OBSTACLE_HPP
+#endif // FOOD_HPP
